@@ -72,10 +72,22 @@ When the user provides a new source:
 When the user asks a question:
 
 1. Read `index.md` first to find relevant pages.
-2. Drill into relevant wiki pages.
-3. Synthesize an answer with `[[wikilink]]` citations.
-4. If the answer is substantial, **file it back into the wiki** as a new page (synthesis or concept).
-5. Update `index.md` and `log.md`.
+2. Drill into relevant wiki pages. Do NOT fall back to raw sources during query — the wiki should be the compiled, sufficient artifact.
+3. **Hard constraint — no fabrication.** If neither the wiki nor `raw/` contains the information needed to answer the question, you MUST NOT generate an answer from your training data or general knowledge. Instead, explicitly tell the user which specific parts of the question fall outside the wiki's current scope. For example: "Wiki 中不包含关于 X 的信息" or "关于 Y 的部分，wiki 中没有任何来源涉及此主题。"
+4. If wiki pages are insufficient to answer the question, ask the user: "Wiki 中缺少部分信息，是否要检查 raw 源文件？"
+   - **User says yes →** proceed with **check-ingest** action:
+     a. Search `raw/` for relevant information that should have been captured.
+     b. If found, analyze **why ingest missed it** (e.g., the concept was implicit, too granular, or the source summary template didn't prompt for this category of information).
+     c. Present the findings to the user and ask:
+        - **Whether to modify the ingest workflow** (e.g., add a new step, update the source template, broaden concept extraction) to prevent future misses.
+        - **Whether to update the wiki now** with the found content (i.e., retroactively complete the ingest for this source).
+     d. If the user approves changes, update `CLAUDE.md` ingest section or wiki pages accordingly, and append to `log.md`.
+   - **User says no →** answer with whatever the wiki does contain, and explicitly state which parts cannot be answered: "关于 X，wiki 中暂无相关信息。"
+5. **用中文生成回答内容。** All responses to the user must be in Chinese.
+6. Synthesize an answer with `[[wikilink]]` citations. When referencing wiki content, cite the source page like `（来源：[[source-xxx]]）`.
+7. When the answer involves comparing or synthesizing multiple pages, present it as a structured analysis with clear sections, not a flat list.
+8. If the answer is substantial, **file it back into the wiki** as a new page (synthesis or concept). The filed page content remains in English (wiki pages are English); only the user-facing response is Chinese.
+9. Update `index.md` and `log.md`.
 
 ### Lint Workflow
 

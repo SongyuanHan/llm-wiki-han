@@ -183,12 +183,13 @@
       "bases:Create new base": false
     }
   },
-  "active": "097beda605ea2e60",
+  "active": "3103b1ddd1733b1d",
   "lastOpenFiles": [
+    "raw/karpathy-llm-wiki.md",
+    "CLAUDE.md",
     "log.md.tmp.41080.1775871783894",
     "wiki/concepts/reviewer-pattern.md.tmp.41080.1775871769711",
     "log.md",
-    "CLAUDE.md",
     "wiki/concepts/claude-api-compatibility.md",
     "raw/5 Agent Skill design patterns every ADK developer should know.md",
     "wiki/entities/zhipuai.md",
@@ -210,7 +211,6 @@
     "wiki/entities/obsidian.md",
     "wiki/entities/andrej-karpathy.md",
     "wiki/sources/source-karpathy-llm-wiki.md",
-    "raw/karpathy-llm-wiki.md",
     "wiki/templates/synthesis.md",
     "wiki/templates",
     "wiki/synthesis",
