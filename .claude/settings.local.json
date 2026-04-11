@@ -1,7 +1,10 @@
 {
   "permissions": {
     "allow": [
-      "Bash(mkdir:*)"
+      "Bash(mkdir:*)",
+      "WebSearch",
+      "Bash(rm -f raw/karpathy-llm-wiki.md \"raw/5 Agent Skill design patterns every ADK developer should know.md\" \"raw/Claude API 兼容 - 智谱AI开放文档.md\")",
+      "Bash(rm -f wiki/concepts/*.md wiki/entities/*.md wiki/sources/*.md wiki/synthesis/*.md)"
     ]
   }
 }
