@@ -1,5 +1,6 @@
 # llm-wiki-han
 reference Karpathy llm-wiki to create a template
+
 | 操作 | 命令 |
 | :--- | :--- |
 | 创建专题 vault | `/new-vault ~/Vaults/llm-wiki-rust` |
