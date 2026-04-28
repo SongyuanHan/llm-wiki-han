@@ -1,32 +1,30 @@
-# LLM Wiki — Schema & Conventions
+# LLM Wiki — 模式与约定
 
-This is a personal knowledge base built using Andrej Karpathy's LLM Wiki pattern.
-The LLM (Claude) owns the `wiki/` layer entirely. You create pages, update them,
-maintain cross-references, and keep everything consistent. The human curates sources
-and asks questions.
+这是一个基于 Andrej Karpathy 的 LLM Wiki 模式构建的个人知识库。
+LLM（即你）完全拥有 `wiki/` 层——你负责创建页面、更新内容、维护交叉引用，并保持所有内容的一致性。人类负责策展来源并提问。
 
-## Directory Structure
+## 目录结构
 
 ```
-raw/              Immutable source documents (never modify)
-raw/assets/       Downloaded images and media
-wiki/             LLM-generated wiki pages (you own this layer)
-wiki/concepts/    Concept and topic pages
-wiki/entities/    Entity pages (people, organizations, tools, etc.)
-wiki/sources/     One summary page per ingested source
-wiki/synthesis/   Cross-domain synthesis and analysis pages
-wiki/templates/   Page templates
-index.md          Content catalog — updated on every ingest
-log.md            Chronological activity log — append only
+raw/              不可变的原始文档（永远不要修改）
+raw/assets/       下载的图片和媒体文件
+wiki/             LLM 生成的 wiki 页面（你拥有这一层）
+wiki/concepts/    概念和主题页面
+wiki/entities/    实体页面（人物、组织、工具等）
+wiki/sources/     每个摄入来源对应一个摘要页面
+wiki/synthesis/   跨领域综合与分析页面
+wiki/templates/   页面模板
+index.md          内容目录——每次摄入时更新
+log.md            时间线活动日志——仅追加
 ```
 
-## Page Format Conventions
+## 页面格式约定
 
-Every wiki page must have YAML frontmatter with these fields:
+每个 wiki 页面必须包含以下 YAML frontmatter 字段：
 
 ```yaml
 ---
-title: Page Title
+title: 页面标题
 type: concept | entity | source | synthesis
 created: YYYY-MM-DD
 updated: YYYY-MM-DD
@@ -38,94 +36,101 @@ status: active | superseded | archived
 ---
 ```
 
-### Optional frontmatter fields
-- `contradictions:` — list of known contradictions with other pages
-- `open_questions:` — list of unresolved questions
-- `related:` — list of `[[wikilinks]]` to related pages
+### 可选 frontmatter 字段
+- `contradictions:` — 与其他页面存在矛盾的已知列表
+- `open_questions:` — 未解决的问题列表
+- `related:` — 相关页面的 `[[wikilinks]]` 列表
 
-## Cross-Referencing Rules
+## 交叉引用规则
 
-1. **Always use `[[wikilinks]]`** for internal references — this powers Obsidian's graph view.
-2. **Every new page must be linked from at least one existing page** (no orphans).
-3. **Cross-reference symmetry:** If page A links to page B, verify page B links back to A.
-4. **Source provenance:** Every claim in the wiki must trace back to a `[[source-*]]` page.
+1. **始终使用 `[[wikilinks]]`** 进行内部引用——这是 Obsidian 图视图的基础。
+2. **每个新页面必须被至少一个已有页面链接**（不允许孤立页面）。
+3. **交叉引用对称性：** 如果页面 A 链接到页面 B，需验证页面 B 也链接回页面 A。
+4. **来源可追溯性：** wiki 中的每个论点必须能追溯到某个 `[[source-*]]` 页面。
 
-## Operations
+## 操作流程
 
-### Ingest Workflow
+### 摄入（Ingest）工作流
 
-When the user provides a new source:
+当用户提供新的来源时：
 
-1. Save the raw source to `raw/` (if not already present). Use a descriptive slug filename.
-2. Read and analyze the source.
-3. Discuss key takeaways with the user.
-4. Create a source summary page at `wiki/sources/source-<slug>.md`.
-5. Create or update entity pages in `wiki/entities/`.
-6. Create or update concept pages in `wiki/concepts/`.
-7. Create or update synthesis pages in `wiki/synthesis/` if cross-domain insights emerge.
-8. Update `index.md` — add all new/changed pages.
-9. Append an entry to `log.md` with format: `## [YYYY-MM-DD] ingest | <title>`
-10. A single source should touch 5–15 wiki pages.
+1. 将原始来源保存到 `raw/`（如果尚未存在）。使用描述性的 slug 文件名。
+2. 阅读并分析来源内容。
+3. 与用户讨论要点。
+4. 在 `wiki/sources/source-<slug>.md` 创建来源摘要页面。
+5. 在 `wiki/entities/` 中创建或更新实体页面。
+6. 在 `wiki/concepts/` 中创建或更新概念页面。
+7. 如果出现跨领域洞察，在 `wiki/synthesis/` 中创建或更新综合页面。
+8. 更新 `index.md`——添加所有新增或变更的页面。
+9. 在 `log.md` 中追加条目，格式：`## [YYYY-MM-DD] ingest | <标题>`
+10. 单个来源应涉及 5–15 个 wiki 页面。
 
-### Query Workflow
+### 查询（Query）工作流
 
-When the user asks a question:
+当用户提出问题时：
 
-1. Read `index.md` first to find relevant pages.
-2. Drill into relevant wiki pages. Do NOT fall back to raw sources during query — the wiki should be the compiled, sufficient artifact.
-3. **Hard constraint — no fabrication.** If neither the wiki nor `raw/` contains the information needed to answer the question, you MUST NOT generate an answer from your training data or general knowledge. Instead, explicitly tell the user which specific parts of the question fall outside the wiki's current scope. For example: "Wiki 中不包含关于 X 的信息" or "关于 Y 的部分，wiki 中没有任何来源涉及此主题。"
-4. If wiki pages are insufficient to answer the question, ask the user: "Wiki 中缺少部分信息，是否要检查 raw 源文件？"
-   - **User says yes →** proceed with **check-ingest** action:
-     a. Search `raw/` for relevant information that should have been captured.
-     b. If found, analyze **why ingest missed it** (e.g., the concept was implicit, too granular, or the source summary template didn't prompt for this category of information).
-     c. Present the findings to the user and ask:
-        - **Whether to modify the ingest workflow** (e.g., add a new step, update the source template, broaden concept extraction) to prevent future misses.
-        - **Whether to update the wiki now** with the found content (i.e., retroactively complete the ingest for this source).
-     d. If the user approves changes, update `CLAUDE.md` ingest section or wiki pages accordingly, and append to `log.md`.
-   - **User says no →** answer with whatever the wiki does contain, and explicitly state which parts cannot be answered: "关于 X，wiki 中暂无相关信息。"
-5. **用中文生成回答内容。** All responses to the user must be in Chinese.
-6. Synthesize an answer with `[[wikilink]]` citations. When referencing wiki content, cite the source page like `（来源：[[source-xxx]]）`.
-7. When the answer involves comparing or synthesizing multiple pages, present it as a structured analysis with clear sections, not a flat list.
-8. If the answer is substantial, **file it back into the wiki** as a new page (synthesis or concept). The filed page content remains in English (wiki pages are English); only the user-facing response is Chinese.
-9. Update `index.md` and `log.md`.
+1. 首先阅读 `index.md` 以找到相关页面。
+2. 深入阅读相关 wiki 页面。查询时**不要**回退到 raw 源文件——wiki 应该是编译后的、充分的知识产物。
+3. **硬性约束——禁止编造。** 如果 wiki 和 `raw/` 都不包含回答问题所需的信息，你**绝不能**从训练数据或通用知识中生成答案。相反，明确告诉用户问题的哪些具体部分超出了 wiki 当前覆盖范围。例如："Wiki 中不包含关于 X 的信息" 或 "关于 Y 的部分，wiki 中没有任何来源涉及此主题。"
+4. 如果 wiki 页面不足以回答问题，询问用户："Wiki 中缺少部分信息，是否要检查 raw 源文件？"
+   - **用户同意 →** 执行 **check-ingest** 操作：
+     a. 在 `raw/` 中搜索应被捕获的相关信息。
+     b. 如果找到，分析**摄入遗漏的原因**（例如：概念是隐含的、粒度过细、或来源摘要模板未涵盖此类信息）。
+     c. 向用户呈现发现并询问：
+        - **是否修改摄入工作流**（例如：添加新步骤、更新来源模板、扩大概念提取范围）以防止未来遗漏。
+        - **是否现在用找到的内容更新 wiki**（即追溯完成该来源的摄入）。
+     d. 如果用户批准修改，相应更新 `CLAUDE.md` 的摄入章节或 wiki 页面，并追加到 `log.md`。
+   - **用户拒绝 →** 用 wiki 中已有的内容回答，并明确说明哪些部分无法回答："关于 X，wiki 中暂无相关信息。"
+5. **用中文生成回答内容。** 所有对用户的回复必须使用中文。
+6. 综合 `[[wikilink]]` 引用生成回答。引用 wiki 内容时，使用格式 `（来源：[[source-xxx]]）`。
+7. 当回答涉及比较或综合多个页面时，以结构化分析呈现，分设明确章节，而非平铺列表。
+8. 如果回答内容丰富，**将其归档为 wiki 新页面**（synthesis 或 concept）。Wiki 页面内容也使用中文撰写。
+9. 更新 `index.md` 和 `log.md`。
 
-### Lint Workflow
+### 检查（Lint）工作流
 
-Periodically health-check the wiki:
+定期对 wiki 进行健康检查：
 
-1. **Contradictions** — find claims that conflict across pages.
-2. **Stale claims** — find claims superseded by newer sources.
-3. **Orphan pages** — pages with no inbound links.
-4. **Missing pages** — concepts/entities mentioned but lacking their own page.
-5. **Dead links** — `[[wikilinks]]` pointing to non-existent pages.
-6. **Missing cross-references** — related pages that should link to each other.
-7. **Incomplete metadata** — pages missing frontmatter fields.
-8. **Empty sections** — pages with placeholder sections never filled in.
-9. **Stale index** — index entries not matching actual pages.
+1. **矛盾项** — 查找页面间相互冲突的论点。
+2. **过时论点** — 查找被更新来源取代的论点。
+3. **孤立页面** — 没有任何入站链接的页面。
+4. **缺失页面** — 被提及但缺少独立页面的概念/实体。
+5. **死链接** — 指向不存在页面的 `[[wikilinks]]`。
+6. **缺失交叉引用** — 应该互相链接的相关页面。
+7. **不完整的元数据** — 缺少 frontmatter 字段的页面。
+8. **空白章节** — 占位符章节从未被填充内容。
+9. **过时的索引** — index 条目与实际页面不匹配。
 
-Append lint results to `log.md` with format: `## [YYYY-MM-DD] lint`
+将检查结果追加到 `log.md`，格式：`## [YYYY-MM-DD] lint`
 
-## Naming Conventions
+## 命名约定
 
-- Source pages: `source-<descriptive-slug>.md`
-- Concept pages: `<descriptive-slug>.md`
-- Entity pages: `<name>.md`
-- Synthesis pages: `<descriptive-slug>.md`
-- Filenames: lowercase, hyphens for spaces, no special characters
+- 来源页面：`source-<描述性-slug>.md`
+- 概念页面：`<描述性-slug>.md`
+- 实体页面：`<名称>.md`
+- 综合页面：`<描述性-slug>.md`
+- 文件名：小写字母、连字符替代空格、不含特殊字符
 
-## Style Guidelines
+## 语言
 
-- Write in clear, concise prose — not bullet-point dumps.
-- Lead with the most important information.
-- Use `[[wikilinks]]` liberally — the graph is the value.
-- Mark uncertain claims with `[speculative]` or set `confidence: speculative`.
-- When a new source contradicts an existing claim, flag it with a `> [!contradiction]` callout rather than silently overwriting.
-- Keep pages focused — one concept or entity per page.
+- **Wiki 页面内容（`wiki/` 目录下所有文件）使用中文撰写。**
+- **与用户的交互和检索结果输出使用中文。**
+- YAML frontmatter 中的 `title`、`tags` 等字段可以使用英文，便于文件名和链接的一致性。
+- `[[wikilinks]]` 内使用英文 slug，页面正文用中文。
 
-## Tools & Integrations
+## 风格指南
 
-- **Obsidian** is the primary viewer — leverage wikilinks, graph view, backlinks.
-- **Obsidian Web Clipper** for saving web articles to `raw/`.
-- **Dataview plugin** — frontmatter enables dynamic queries.
-- **Marp plugin** — for generating slide decks from wiki content.
-- **Graph view** — the best way to see wiki structure at a glance.
+- 以清晰、简洁的中文撰写，避免堆砌要点。
+- 把最重要的信息放在最前面。
+- 大量使用 `[[wikilinks]]`——知识图谱是核心价值所在。
+- 不确定的论点用 `[speculative]` 标记，或将 `confidence` 设为 `speculative`。
+- 当新来源与已有论点矛盾时，用 `> [!contradiction]` 标注，而非静默覆盖。
+- 每个页面聚焦一个概念或实体。
+
+## 工具与集成
+
+- **Obsidian** 是主要查看器——充分利用 wikilinks、图视图、反向链接。
+- **Obsidian Web Clipper** 用于将网页文章保存到 `raw/`。
+- **Dataview 插件** — frontmatter 支持动态查询。
+- **Marp 插件** — 用于从 wiki 内容生成幻灯片。
+- **图视图** — 一览 wiki 结构全貌的最佳方式。
