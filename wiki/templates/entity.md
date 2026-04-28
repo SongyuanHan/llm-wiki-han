@@ -10,23 +10,23 @@ tags: []
 
 # {{title}}
 
-> One-sentence description of who/what this entity is.
+> 关于该实体是谁/什么的一句话描述。
 
-## Overview
+## 概述
 
-2–3 paragraphs providing context: who they are, what they do, why they're relevant to the wiki's domain. Use [[wikilinks]] freely.
+2–3 段文字提供背景信息：他们是谁、做什么、为什么与 wiki 的领域相关。自由使用 [[wikilinks]]。
 
-## Key Contributions
+## 主要贡献
 
-- Contribution 1
-- Contribution 2
+- 贡献 1
+- 贡献 2
 
-## Connections
+## 关联
 
-- **Related entities:** [[]], [[]]
-- **Concepts:** [[]], [[]]
-- **Sources:** [[source-]]
+- **相关实体：** [[]], [[]]
+- **概念：** [[]], [[]]
+- **来源：** [[source-]]
 
-## References
+## 参考
 
-- _(external links, profiles, etc.)_
+- _（外部链接、个人资料等）_

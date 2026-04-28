@@ -10,39 +10,39 @@ tags: []
 
 # {{title}}
 
-> One-sentence description of the source.
+> 来源的一句话描述。
 
-## Bibliography
+## 文献信息
 
-- **Author(s):**
-- **Date:**
-- **URL:**
-- **Type:**
+- **作者：**
+- **日期：**
+- **URL：**
+- **类型：**
 
-## Summary
+## 摘要
 
-3–5 paragraphs summarizing the key points of the source. This is the compiled version — not a replacement for reading the original, but a thorough distillation of its most important ideas.
+3–5 段文字总结该来源的要点。这是编译后的版本——不能替代阅读原文，而是对其最重要思想的全面提炼。
 
-## Key Claims
+## 核心论点
 
-1. Claim 1 — _supported by evidence X_
-2. Claim 2 — _supported by evidence Y_
-3. Claim 3
+1. 论点 1 — _由证据 X 支持_
+2. 论点 2 — _由证据 Y 支持_
+3. 论点 3
 
-## Notable Quotes
+## 重要引述
 
-> "Relevant quote from the source."
+> "来自来源的相关引用。"
 
-## Entities Mentioned
-
-- [[]]
-
-## Concepts Introduced
+## 提及的实体
 
 - [[]]
 
-## Connections
+## 引入的概念
 
-- **Contradicts:** _(none yet)_
-- **Extends:** _(none yet)_
-- **Related sources:** _(none yet)_
+- [[]]
+
+## 关联
+
+- **矛盾：** _（暂无）_
+- **扩展：** _（暂无）_
+- **相关来源：** _（暂无）_

@@ -12,30 +12,30 @@ status: active
 
 # {{title}}
 
-> One-sentence framing of the synthesis question or insight.
+> 综合性问题或洞察的一句话表述。
 
-## Thesis
+## 核心论点
 
-2–4 paragraphs presenting the synthesized insight — something that emerges from combining multiple sources and isn't visible from any single source alone.
+2–4 段文字呈现综合洞察——通过结合多个来源才能看到、任何单一来源都无法独立揭示的内容。
 
-## Evidence
+## 证据
 
-| Source | Claim | Relevance |
-|--------|-------|-----------|
+| 来源 | 论点 | 相关性 |
+|------|------|--------|
 | [[source-]] | | |
 | [[source-]] | | |
 
-## Implications
+## 影响
 
-- Implication 1
-- Implication 2
+- 影响 1
+- 影响 2
 
-## Open Questions
+## 待解决问题
 
-- _(none yet)_
+- _（暂无）_
 
-## Connections
+## 关联
 
-- **Related synthesis:** [[]]
-- **Concepts:** [[]], [[]]
-- **Sources:** [[source-]]
+- **相关综合：** [[]]
+- **概念：** [[]], [[]]
+- **来源：** [[source-]]

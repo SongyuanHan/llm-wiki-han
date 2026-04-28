@@ -12,24 +12,24 @@ status: active
 
 # {{title}}
 
-> One-sentence definition of the concept.
+> 概念的一句话定义。
 
-## Summary
+## 概述
 
-2–4 paragraphs explaining the concept, its significance, and how it relates to other ideas in the wiki. Use [[wikilinks]] for every referenced concept, entity, or source.
+2–4 段文字解释该概念、其重要性以及它与 wiki 中其他概念的关联。对每个引用的概念、实体或来源使用 [[wikilinks]]。
 
-## Key Principles
+## 核心原则
 
-- Principle 1
-- Principle 2
-- Principle 3
+- 原则 1
+- 原则 2
+- 原则 3
 
-## Connections
+## 关联
 
-- **Related concepts:** [[]], [[]]
-- **Entities:** [[]], [[]]
-- **Sources:** [[source-]]
+- **相关概念：** [[]], [[]]
+- **实体：** [[]], [[]]
+- **来源：** [[source-]]
 
-## Open Questions
+## 待解决问题
 
-- _(none yet)_
+- _（暂无）_
